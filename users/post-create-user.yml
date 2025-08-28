@@ -17,19 +17,19 @@ paths:
               $ref: '#/components/schemas/CreateUserRequest'
       responses:
         '201':
-          description: Usuario creado exitosamente
+          description: Customer was created with successful
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomerIdResponse'
         '400':
-          description: Request inválido (datos faltantes o inválidos)
+          description: Invalid Request, fields mandatory
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '409':
-          description: Conflicto (usuario ya existe)
+          description: Conflict, email already was used by other user
           content:
             application/json:
               schema:
@@ -67,7 +67,7 @@ components:
       properties:
         customerId:
           type: string
-          example: ""
+          example: "71a8fb6b-12ec-43c8-baaa-63d0696384df"
 
     ErrorResponse:
       type: object

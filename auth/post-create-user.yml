@@ -1,0 +1,51 @@
+openapi: 3.0.3
+info:
+  title: User Service API
+  version: 1.0.0
+  description: API handler customer
+
+paths:
+  /api/users:
+    post:
+      summary: Create new user
+      description: Create a new customer without returned it
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: User was persisted with successful
+        '400':
+          description: Invalid Request, fields mandatory
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    CreateUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "jdoe"
+        password:
+          type: string
+          example: "jdoe"          
+      required:
+        - username
+        - password
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: number
+          example: 400
+        message:
+          type: string
+          example: "User must be mandatory"
