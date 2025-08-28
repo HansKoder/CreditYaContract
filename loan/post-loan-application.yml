@@ -1,0 +1,96 @@
+openapi: 3.0.3
+info:
+  title: Loan Service API
+  version: 1.0.0
+  description: API handler Loan
+
+paths:
+  /api/loan:
+    post:
+      summary: Loan Application
+      description: Create new request for applying a loan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loanApplicationRequest'
+      responses:
+        '201':
+          description: Loan was persisted with successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loanAppliedResponse'
+        '400':
+          description: Invalid Request, fields mandatory
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    loanApplicationRequest:
+      type: object
+      properties:
+        document:
+          type: string
+          example: "xxx"
+        amount:
+          type: number
+          example: 1000          
+        period:
+          type: string
+          format: date
+          example: "2025/10/25"
+        loanType:
+          type: string
+          enum:
+            - PERSONAL
+            - MORTGAGE
+            - VEHICULAR
+      required:
+        - document
+        - amount
+        - period
+        - loanType
+
+    loanAppliedResponse:
+      type: object
+      properties:
+        loanId: 
+          type: string
+          example: 7ce77768-f25f-446a-9358-e7f0e1d298fe
+        document:
+          type: string
+          example: "xxx"
+        amount:
+          type: number
+          example: 1000          
+        period:
+          type: string
+          example: "2025/10/25"
+        loanType:
+          type: string
+          example: PERSONAL
+        status:
+          type: string
+          example: PENDING
+      required:
+        - loanId
+        - document
+        - amount
+        - period
+        - loanType
+        - status
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: number
+          example: 400
+        message:
+          type: string
+          example: "User must be mandatory"
