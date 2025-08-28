@@ -1,0 +1,80 @@
+openapi: 3.0.3
+info:
+  title: User Service API
+  version: 1.0.0
+  description: API handler customer
+
+paths:
+  /api/users:
+    post:
+      summary: Create new user
+      description: Create a new customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: Usuario creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerIdResponse'
+        '400':
+          description: Request inválido (datos faltantes o inválidos)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflicto (usuario ya existe)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    CreateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "jdoe"
+        lastName:
+          type: string
+          example: "jdoe"          
+        phone:
+          type: string
+          example: "(57) xxx xxx"          
+        baseSalary:
+          type: number
+          example: 10000          
+        email:
+          type: string
+          format: email
+          example: "jdoe@example.com"
+      required:
+        - name
+        - lastName
+        - baseSalary
+        - email
+
+    CustomerIdResponse:
+      type: object
+      properties:
+        customerId:
+          type: string
+          example: ""
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: number
+          example: 409
+        message:
+          type: string
+          example: "This email example@gmail.com is used by other user"
