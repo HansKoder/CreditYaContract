@@ -1,0 +1,73 @@
+openapi: 3.0.3
+info:
+  title: User Service API
+  version: 1.0.0
+  description: API Login
+
+paths:
+  /api/v1/login:
+    post:
+      summary: POST Login
+      description: Login is used to authentication and authorization, and also, when threshold is reach out its account will be locked
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: User's authentication and authorization, and also generate token with JsonWebToken
+          headers:
+            Authorization:
+              schema:
+                type: string
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30
+        '400':
+          description: Bad Request, email or password are mandatory
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Incorrect Credentials or Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'                
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          format: email
+          example: "doe@gmail.com"
+        password:
+          type: string
+          example: "jdoe"          
+      required:
+        - username
+        - password
+
+    BadRequestResponse:
+      type: object
+      properties:
+        status:
+          type: number
+          example: 400
+        message:
+          type: string
+          example: "username must be mandatory"
+
+    UnauthorizedResponse:
+      type: object
+      properties:
+        status:
+          type: number
+          example: 401
+        message:
+          type: string
+          example: "Credentials invalid"
