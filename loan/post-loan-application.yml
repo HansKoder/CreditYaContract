@@ -44,17 +44,14 @@ components:
           type: string
           format: date
           example: "2025/10/25"
-        loanType:
-          type: string
-          enum:
-            - PERSONAL
-            - MORTGAGE
-            - VEHICULAR
+        loanTypeId:
+          type: number
+          example: 1
       required:
         - document
         - amount
         - period
-        - loanType
+        - loanTypeId
 
     loanAppliedResponse:
       type: object
@@ -71,9 +68,9 @@ components:
         period:
           type: string
           example: "2025/10/25"
-        loanType:
-          type: string
-          example: PERSONAL
+        loanTypeId:
+          type: number
+          example: 1
         status:
           type: string
           example: PENDING
