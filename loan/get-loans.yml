@@ -1,0 +1,115 @@
+openapi: 3.0.3
+info:
+  title: Loan Service API
+  version: 1.0.0
+  description: API handler Loan
+
+paths:
+  /api/v1/loans:
+    get:
+      summary: Retrieve loans (Advisor side)
+      description: Retrieve loans using filters (status, document, loanId) and pagination
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: 0
+          description: Page number (default = 0)
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: 10
+          description: Page size (default = 10)
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            example: PENDING
+          description: Loan status filter (optional)
+        - name: document
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "123456789"
+          description: Customer document (optional)
+        - name: loanId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+            example: "7ce77768-f25f-446a-9358-e7f0e1d298fe"
+          description: Loan identifier (optional)
+      responses:
+        '200':
+          description: Successful loan retrieval
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoanRead'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - Missing or invalid token
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    LoanRead:
+      type: object
+      properties:
+        loanId: 
+          type: string
+          example: 7ce77768-f25f-446a-9358-e7f0e1d298fe
+        document:
+          type: string
+          example: "123456789"
+        amount:
+          type: number
+          example: 1000
+        period:
+          type: string
+          format: date
+          example: "2025-10-25"
+        loanType:
+          type: string
+          example: "HOME"
+        status:
+          type: string
+          example: "PENDING"
+      required:
+        - loanId
+        - document
+        - amount
+        - period
+        - loanType
+        - status
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: number
+          example: 400
+        message:
+          type: string
+          example: "Invalid request parameters"

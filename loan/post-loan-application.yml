@@ -5,7 +5,7 @@ info:
   description: API handler Loan
 
 paths:
-  /api/loan:
+  /api/v1/loan:
     post:
       summary: Loan Application
       description: Create new request for applying a loan
